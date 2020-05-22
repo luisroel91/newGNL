@@ -12,16 +12,6 @@
 
 #include "get_next_line.h"
 
-char		*findnl(const char *s)
-{
-	while (*s != '\n')
-	{
-		if (!s++)
-			return (NULL);
-	}
-	return ((char *)&s);
-}
-
 t_frame		*gen_lst(void const *buff, int	fd)
 {
 	t_frame		*new_list;
@@ -63,5 +53,3 @@ char		*strjoin(char const *s1, char const *s2)
 	*newstr = '\0';
 	return (newstr);
 }
-
-

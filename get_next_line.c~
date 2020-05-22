@@ -35,7 +35,7 @@ int		process_line(int fd, char **line)
 	int		numbytes;
 	char	buff[BUFF_SIZE + 1];
 	char	*ptr;
-	
+	//TODO: Make a function to replace strjoin/chr
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[numbytes] = '\0';
@@ -43,8 +43,8 @@ int		process_line(int fd, char **line)
 		if (!(*line = strjoin(*line, buff)))
 			return (-1);
 		free (ptr);
-		if (findnl(buff))
-			break;
+		//if (strchr(buff, EOL))
+			//break;
 	}
 	return (numbytes);
 }

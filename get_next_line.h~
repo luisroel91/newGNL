@@ -31,10 +31,9 @@ typedef struct		s_frame
     struct s_frame	*next;
 }					t_frame;
 
-int                 get_next_line(int fd, char **line);
-char                *findnl(const char *s)
-t_frame             *gen_lst(void const *buff, int	fd);
-char                *strjoin(char const *s1, char const *s2);
+int					get_next_line(int fd, char **line);
+t_frame		        *gen_lst(void const *buff, int	fd);
+char		        *strjoin(char const *s1, char const *s2);
 
 
 #endif 
