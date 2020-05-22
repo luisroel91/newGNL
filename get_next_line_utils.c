@@ -12,36 +12,44 @@
 
 #include "get_next_line.h"
 
-
-
-int		push_buff(t_frame *frame, uint8_t bytes)
+t_frame		*gen_lst(void const *buff, int	fd)
 {
-	int		next;
-
-	next = frame->head + 1;
-	if (next >= frame->mxbufflen)
-		next = 0;
+	t_frame		*new_list;
 	
-	if (next == frame->tail)
-		return -1;
-	
-	frame->buff[frame->head] = bytes;
-	frame->head = next;
-	return 0;
+	new_list = NULL;
+	if (!(new_list = (t_frame *)malloc(sizeof(t_list))) ||
+		fd == NULL || fd > MAX_FD)
+		return (NULL);
+	if (!(new_list->buff = malloc(sizeof(buff))))
+	{
+		free(new_list);
+		return (NULL);
+	}
+	new_list->fd = fd;
+	new_list->next = NULL;
+	return (new_list);
 }
 
-int		pop_buff(t_frame *frame, uint8_t *bytes)
+char		*strjoin(char const *s1, char const *s2)
 {
-	int		next;
-
-	if (frame->head == frame->tail)
-		return (-1);
-	next = frame->tail + 1;
-
-	if (next >= frame->mxbufflen)
-		next = 0;
-	*bytes = frame->buff[frame->tail];
-	frame->tail = next;
+	char	*newstr;
+	size_t	len1;
+	size_t	len2;
+	size_t	total;
 	
-	return (0);
+	if (!s1 || !s2)
+		return (NULL);
+	while (s1[len1++] != '\0')
+	while (s2[len2++] != '\0')
+	total = len1 + len2;
+	newstr = (char *)malloc(sizeof(*newstr) * (total + 1));
+	if (newstr == NULL)
+		return (NULL);
+	while (*s1 != '\0')
+		*newstr++ = *s1++;
+	*newstr = '\0';
+	while (*s2 != '\0')
+		*newstr++ = *s2++;
+	*newstr = '\0';
+	return (newstr);
 }

@@ -26,13 +26,14 @@
 
 typedef struct		s_frame
 {
-    uint8_t	*const 	buff;
-	int				head;
-	int				tail;
-	const	int		mxbufflen;
+    char  			*buff;
+    int				fd;
+    struct s_frame	*next;
 }					t_frame;
 
 int					get_next_line(int fd, char **line);
-int					memn(char *s);
+t_frame		        *gen_lst(void const *buff, int	fd);
+char		        *strjoin(char const *s1, char const *s2);
+
 
 #endif 
