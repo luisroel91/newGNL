@@ -30,7 +30,7 @@ t_frame		*frame_ops(int fd, t_frame **list)
 	*list = ptr;
 }
 
-int		process_line(int fd, char **line)
+int		fd2buff(int fd, char **line)
 {
 	int		numbytes;
 	char	buff[BUFF_SIZE + 1];
@@ -56,13 +56,20 @@ int		get_next_line(int fd, char **line)
 	size_t			lnlen;
 	char			*ptr;
 	char			buff[BUFF_SIZE + 1];
-/*
-** 	if we have an invalid fd, if there is no line, if read
-** 	returns an error, if there is an error generating the
-**	current frame
-*/
+
 	if (fd < 0 || !line || (read(fd, buff, 0)) < 0 ||
 		(!(current = frame_ops(fd, &list))))
 		return (-1);
 	ptr = current->buff;
+	lnlen = fd2buff(fd, &ptr);
+	current->buff = ptr;
+	if (!lnlen && !*ptr)
+		return (0);
+	//TODO: remake dup_line as buff2line + strdup/strndup
+	//lnlen = buff2line(line, current->budd, EOL);
+	//ptr = current->buff;
+	if (ptr[lnlen] != '\0')
+	{
+		current->buff = strndup
+	}
 }
