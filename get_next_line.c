@@ -28,9 +28,10 @@ t_frame		*frame_ops(int fd, t_frame **list)
 	ptr = gen_lst("", fd);
 	ptr->next = *list;
 	*list = ptr;
+	return (ptr);
 }
 
-int		fd2buff(int fd, char **line)
+int		fd2framebuff(int fd, char **line)
 {
 	int		numbytes;
 	char	buff[BUFF_SIZE + 1];
@@ -61,7 +62,7 @@ int		get_next_line(int fd, char **line)
 		(!(current = frame_ops(fd, &list))))
 		return (-1);
 	ptr = current->buff;
-	lnlen = fd2buff(fd, &ptr);
+	lnlen = fd2framebuff(fd, &ptr);
 	current->buff = ptr;
 	if (!lnlen && !*ptr)
 		return (0);
