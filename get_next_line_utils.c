@@ -49,8 +49,8 @@ char		*strjoin(char const *s1, char const *s2)
 	
 	if (!s1 || !s2)
 		return (NULL);
-	while (s1[len1++] != '\0')
-	while (s2[len2++] != '\0')
+	while (s1[len1++] != '\0');
+	while (s2[len2++] != '\0');
 	total = len1 + len2;
 	newstr = (char *)malloc(sizeof(*newstr) * (total + 1));
 	if (newstr == NULL)
@@ -64,4 +64,15 @@ char		*strjoin(char const *s1, char const *s2)
 	return (newstr);
 }
 
-
+char		*strxdup(char const *s1, int size)
+{
+	if (size == -1)
+	{
+		// make size == total size of s1 
+		// malloc str
+		// make full copy
+	}
+	// leave size as is
+	// malloc str
+	// do partial copy
+}

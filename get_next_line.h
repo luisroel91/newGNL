@@ -35,6 +35,7 @@ int                 get_next_line(int fd, char **line);
 char                *findnl(const char *s)
 t_frame             *gen_lst(void const *buff, int	fd);
 char                *strjoin(char const *s1, char const *s2);
+char                *strxdup(char const *s1, size_t size, char flag);
 
 
 #endif 

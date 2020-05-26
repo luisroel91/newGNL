@@ -31,7 +31,7 @@ t_frame		*frame_ops(int fd, t_frame **list)
 	return (ptr);
 }
 
-int		fd2framebuff(int fd, char **line)
+int		fd2frame(int fd, char **line)
 {
 	int		numbytes;
 	char	buff[BUFF_SIZE + 1];
@@ -50,6 +50,18 @@ int		fd2framebuff(int fd, char **line)
 	return (numbytes);
 }
 
+int		frame2line(char **line, char *buff)
+{
+	int		counter;
+	
+	counter = 0;
+	while (buff[counter] && content[counter] != '\n')
+		counter++;
+	if (!(*line = strxdup(buff, counter);
+		return (0);
+	return (counter);
+}
+
 int		get_next_line(int fd, char **line)
 {
 	static	t_frame	*list;
@@ -62,15 +74,18 @@ int		get_next_line(int fd, char **line)
 		(!(current = frame_ops(fd, &list))))
 		return (-1);
 	ptr = current->buff;
-	lnlen = fd2framebuff(fd, &ptr);
+	lnlen = fd2frame(fd, &ptr);
 	current->buff = ptr;
 	if (!lnlen && !*ptr)
 		return (0);
-	//TODO: remake dup_line as buff2line + strdup/strndup
-	//lnlen = buff2line(line, current->budd, EOL);
-	//ptr = current->buff;
+	lnlen = frame2line(line, current->buff);
+	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		current->buff = strndup
+		current->buff = strxdup(&frame->content[lnlen + 1], -1);
+		free(ptr);
 	}
+	else
+		ptr[0] = '\0';
+	return (1);
 }
