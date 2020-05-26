@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luiroel <luiroel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/12 22:27:34 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/26 01:01:14 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_frame		*gen_lst(void const *buff, int	fd)
 	t_frame		*new_list;
 	
 	new_list = NULL;
-	if (!(new_list = (t_frame *)malloc(sizeof(t_list))) ||
+	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) ||
 		fd == NULL || fd > MAX_FD)
 		return (NULL);
 	if (!(new_list->buff = malloc(sizeof(buff))))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luiroel <luiroel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/12 20:35:02 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/26 01:00:52 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int		frame2line(char **line, char *buff)
 	int		counter;
 	
 	counter = 0;
-	while (buff[counter] && content[counter] != '\n')
+	while (buff[counter] && buff[counter] != '\n')
 		counter++;
-	if (!(*line = strxdup(buff, counter);
+	if (!(*line = strxdup(buff, counter)));
 		return (0);
 	return (counter);
 }
@@ -82,7 +82,7 @@ int		get_next_line(int fd, char **line)
 	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		current->buff = strxdup(&frame->content[lnlen + 1], -1);
+		current->buff = strxdup(&current->buff[lnlen + 1], -1);
 		free(ptr);
 	}
 	else
