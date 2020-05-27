@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/26 01:01:14 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/26 17:42:02 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 char		*findnl(const char *s)
 {
-	while (*s != '\n')
-	{
-		if (!s++)
+	size_t		i;
+
+	i = 0;
+	while (s[i] != '\n')
+		if ( !s[i++])
 			return (NULL);
-	}
-	return ((char *)&s);
+	return ((char *)&s[i]);
 }
 
 t_frame		*gen_lst(void const *buff, int	fd)
@@ -28,7 +29,7 @@ t_frame		*gen_lst(void const *buff, int	fd)
 	
 	new_list = NULL;
 	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) ||
-		fd == NULL || fd > MAX_FD)
+		!fd || fd > MAX_FD)
 		return (NULL);
 	if (!(new_list->buff = malloc(sizeof(buff))))
 	{
@@ -56,23 +57,34 @@ char		*strjoin(char const *s1, char const *s2)
 	if (newstr == NULL)
 		return (NULL);
 	while (*s1 != '\0')
-		*newstr++ = *s1++;
+		*(newstr++) = *(s1++);
 	*newstr = '\0';
 	while (*s2 != '\0')
-		*newstr++ = *s2++;
+		*(newstr++) = *(s2++);
 	*newstr = '\0';
 	return (newstr);
 }
 
+/*
+** We use size as a flag, if the size is sent to func as -1, we can assume
+** that the caller wanted a full copy of the string
+*/
+
 char		*strxdup(char const *s1, int size)
 {
+	char		*dupstr;
+	int			  counter;
+	
+	counter = 0;
 	if (size == -1)
 	{
-		// make size == total size of s1 
-		// malloc str
-		// make full copy
+		size = 0;
+		while (s1[size++] != '\0');
 	}
-	// leave size as is
-	// malloc str
-	// do partial copy
+	if (!(dupstr = (char *)malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	while (*s1 && counter++ < size)
+		*(dupstr++) = *(s1++);
+	*dupstr = '\0';
+	return (dupstr);
 }

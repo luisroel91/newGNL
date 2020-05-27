@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/26 01:00:52 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/26 17:45:18 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_frame		*frame_ops(int fd, t_frame **list)
 {
 	t_frame		*ptr;
 	
-	if (!ptr)
+	if (!list)
 		return (NULL);
 	ptr = *list;
 	while (ptr)
@@ -42,9 +42,11 @@ int		fd2frame(int fd, char **line)
 		buff[numbytes] = '\0';
 		ptr = *line;
 		if (!(*line = strjoin(*line, buff)))
+		{
 			return (-1);
+		}
 		free (ptr);
-		if (findnl(buff))
+		if  (findnl(buff))
 			break;
 	}
 	return (numbytes);
@@ -57,7 +59,7 @@ int		frame2line(char **line, char *buff)
 	counter = 0;
 	while (buff[counter] && buff[counter] != '\n')
 		counter++;
-	if (!(*line = strxdup(buff, counter)));
+	if (!(*line = strxdup(buff, counter)))
 		return (0);
 	return (counter);
 }
