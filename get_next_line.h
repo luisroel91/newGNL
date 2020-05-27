@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:03:48 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/26 17:26:31 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/26 19:18:56 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # define BUFF_SIZE 	32
 # define MAX_FD		4096
 # define EOL		'\n'
-# define EOF		0
 
 # include <stdlib.h>
 # include <unistd.h>
