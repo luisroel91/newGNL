@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/26 17:45:18 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/31 14:39:22 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,16 @@ t_frame		*frame_ops(int fd, t_frame **list)
 
 int		fd2frame(int fd, char **line)
 {
-	int		numbytes;
-	char	buff[BUFF_SIZE + 1];
-	char	*ptr;
+	int		 numbytes;
+	char 	buff[BUFF_SIZE + 1];
+	char 	*ptr;
 	
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[numbytes] = '\0';
 		ptr = *line;
-		if (!(*line = strjoin(*line, buff)))
-		{
+		if (!(*line = ft_strjoin(*line, buff)))
 			return (-1);
-		}
 		free (ptr);
 		if  (findnl(buff))
 			break;
@@ -59,7 +57,7 @@ int		frame2line(char **line, char *buff)
 	counter = 0;
 	while (buff[counter] && buff[counter] != '\n')
 		counter++;
-	if (!(*line = strxdup(buff, counter)))
+	if (!(*line = strxdup(buff, counter, 'p')))
 		return (0);
 	return (counter);
 }
@@ -84,7 +82,7 @@ int		get_next_line(int fd, char **line)
 	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		current->buff = strxdup(&current->buff[lnlen + 1], -1);
+		current->buff = strxdup(&current->buff[lnlen + 1], 0, 'w');
 		free(ptr);
 	}
 	else

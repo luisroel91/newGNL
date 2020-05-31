@@ -6,66 +6,84 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/26 19:18:49 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/31 14:48:50 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*findnl(const char *s)
+char		*findnl(char const *s)
 {
-	size_t		i;
-
-	i = 0;
-	while (s[i] != '\n')
-		if ( !s[i++])
-			return (NULL);
-	return ((char *)&s[i]);
+	if (!s)
+		return (NULL);
+	while ((*s != '\n') && *s)
+		s++;
+	if (!(*s))
+		return (NULL);
+	return ((char *)s);
 }
 
-t_frame		*gen_lst(void const *buff, int	fd)
+char		*ft_strncpy(char *dest, char const *src, int n)
+{
+	int		counter;
+
+	counter = 0;
+	while (counter < n)
+		dest[counter++] = *src++;
+	return (dest);
+}
+
+t_frame		*gen_lst(char const	*buff, int	fd)
 {
 	t_frame		*new_list;
 	
 	new_list = NULL;
 	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
 		return (NULL);
-	if (!(new_list->buff = malloc(sizeof(buff))))
+	new_list->next = NULL;
+	if (buff == NULL)
 	{
-		free(new_list);
-		return (NULL);
+		new_list->buff = NULL;
+		new_list->fd = 0;
 	}
-	new_list->fd = fd;
+	else
+	{
+		if (!(new_list->buff = malloc(sizeof(buff))))
+		{
+			free(new_list);
+			return (NULL);
+		}
+		new_list->buff[0] = '\0';
+		new_list->fd = fd;
+	}
 	new_list->next = NULL;
 	return (new_list);
 }
 
 char		*strjoin(char const *s1, char const *s2)
 {
-	char	*newstr;
-	size_t	len1;
-	size_t	len2;
-	size_t	total;
-	
-	if (!s1 || !s2)
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	j = 0;
+	i = 0;
+	if (s1)
+		 while (*s1++)
+			 i++;
+	if (s2)
+		while(*s1++)
+			 j++;
+	if ((str = (char *)malloc(sizeof(str) * ((i + j) + 1))) == NULL)
 		return (NULL);
-	len1 = 0;
-	len2 = 0;
-	if (*s1 != '\0')
-		while (s1[len1++] != '\0');
-	if (*s2 != '\0')
-		while (s2[len2++] != '\0');
-	total = len1 + len2;
-	newstr = (char *)malloc(sizeof(*newstr) * (total + 1));
-	if (newstr == NULL)
-		return (NULL);
-	while (*s1 != '\0')
-		*(newstr++) = *(s1++);
-	*newstr = '\0';
-	while (*s2 != '\0')
-		*(newstr++) = *(s2++);
-	*newstr = '\0';
-	return (newstr);
+	i = 0;
+	while (*s1)
+		str[i++] = *s1++;
+	if (s2)
+		while (*s2)
+			str[i++] = *s2++;
+	str[i] = '\0';
+	return (str);
 }
 
 /*
@@ -73,21 +91,25 @@ char		*strjoin(char const *s1, char const *s2)
 ** that the caller wanted a full copy of the string
 */
 
-char		*strxdup(char const *s1, int size)
+
+char		*strxdup(char const *s1, int size, char flag)
 {
-	char		*dupstr;
-	int			  counter;
-	
-	counter = 0;
-	if (size == -1)
-	{
-		size = 0;
-		while (s1[size++] != '\0');
-	}
-	if (!(dupstr = (char *)malloc(sizeof(char) * (size + 1))))
+ 	char		*dupstr;
+ 	int 		  counter;
+	int 		  i;
+ 
+ 	counter = 0;
+ 	if (s1)
+		 while (*s1++)
+			 counter++;
+	dupstr = (char *)malloc(sizeof(char) * (counter + 1));
+	i = 0;
+	if (!dupstr)
 		return (NULL);
-	while (*s1 && counter++ < size)
-		*(dupstr++) = *(s1++);
-	*dupstr = '\0';
+	else if (s1[i] && i < size && flag == 'p')
+		dupstr[i++] = s1[i++];
+	else while (s1[i] && i < counter && flag == 'w')
+		dupstr[i++] = s1[i++];
 	return (dupstr);
-}
+ }
+ 
