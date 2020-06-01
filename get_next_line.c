@@ -6,13 +6,13 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 03:52:49 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 05:03:49 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_frame		*gen_lst(char const	*buff, int	fd)
+static t_frame		*gen_lst(char const	*buff, int	fd)
 {
 	t_frame		*new_list;
 	
@@ -34,7 +34,7 @@ t_frame		*gen_lst(char const	*buff, int	fd)
 	return (new_list);
 }
 
-t_frame		*frame_ops(int fd, t_frame **list)
+static t_frame		*frame_ops(int fd, t_frame **list)
 {
 	t_frame		*ptr;
 	
@@ -53,7 +53,7 @@ t_frame		*frame_ops(int fd, t_frame **list)
 	return (ptr);
 }
 
-int		fd2frame(int fd, char **line)
+static int		fd2frame(int fd, char **line)
 {
 	int		 numbytes;
 	char 	buff[BUFF_SIZE + 1];
@@ -76,15 +76,16 @@ int		fd2frame(int fd, char **line)
 	return (numbytes);
 }
 
-int		frame2line(char **line, char *buff)
+static int		frame2line(char **line, char *buff)
 {
 	int		counter;
 	
 	counter = 0;
-	while (buff[counter] && buff[counter] != '\n')
-		counter++;
-	if (!(*line = strxdup(buff, counter, 'p')))
+	while (buff[counter] && buff[counter] != '\n'){counter++;};
+	if (!(*line = (char *)malloc(sizeof(char) * counter + 1)))
 		return (0);
+	mcpy(*line, buff, counter);
+	line[counter + 1] = '\0';
 	return (counter);
 }
 
@@ -108,11 +109,8 @@ int		get_next_line(int fd, char **line)
 	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		//current->buff = strxdup(&current->buff[lnlen + 1], 0, 'w');
-		//it would stnad to reason that if ptr[lnlen]  != '\0'
-		//we would have to add it to the buff before freeing ptr
 		mcpy(ptr, &current->buff[lnlen + 1], lnlen);
-		ptr[lnlen] = '\0';
+		ptr[lnlen + 1] = '\0';
 		free(ptr);
 	}
 	else

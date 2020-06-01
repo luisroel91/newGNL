@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 03:52:50 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 05:01:01 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,3 @@ char        *ft_strjoin(char const *s1, char const *s2)
     ptr =  mcpy((mcpy(result,(s1-i),i)+i-1),(s2-j),j);
     return (ptr-(i-1));
 }
-
-char        *strxdup(char const *s1, int size, char flag)
-{
-    char    *result;
-    int     cpy_len;
-    cpy_len = size;
-    result = NULL;
-    if (flag == 'w')
-		cpy_len = 0;
-        while (*s1++){cpy_len++;}
-    result = malloc(sizeof(*result) * (cpy_len + 1));
-    mcpy(result, (s1 - (cpy_len + 1)), (cpy_len + 1));
-    result[cpy_len] = '\0';
-    return (result);
- }
- 
