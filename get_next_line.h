@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:03:48 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/31 14:49:09 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/31 14:54:37 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct		s_frame
 int                 			get_next_line(int fd, char **line);
 char						  *findnl(char const *s);
 t_frame					   *gen_lst(char const *buff, int	fd);
-char						  *strjoin(char const *s1, char const *s2);
+char						  *ft_strjoin(char const *s1, char const *s2);
 char						  *strxdup(char const *s1, int size, char flag);
 
 

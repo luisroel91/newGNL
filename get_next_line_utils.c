@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/31 14:48:50 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/05/31 17:18:22 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,6 @@ char		*findnl(char const *s)
 	if (!(*s))
 		return (NULL);
 	return ((char *)s);
-}
-
-char		*ft_strncpy(char *dest, char const *src, int n)
-{
-	int		counter;
-
-	counter = 0;
-	while (counter < n)
-		dest[counter++] = *src++;
-	return (dest);
 }
 
 t_frame		*gen_lst(char const	*buff, int	fd)
@@ -60,7 +50,7 @@ t_frame		*gen_lst(char const	*buff, int	fd)
 	return (new_list);
 }
 
-char		*strjoin(char const *s1, char const *s2)
+char		*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -96,20 +86,25 @@ char		*strxdup(char const *s1, int size, char flag)
 {
  	char		*dupstr;
  	int 		  counter;
-	int 		  i;
  
  	counter = 0;
- 	if (s1)
+ 	if (flag == 'w')
+	 {
 		 while (*s1++)
 			 counter++;
-	dupstr = (char *)malloc(sizeof(char) * (counter + 1));
-	i = 0;
-	if (!dupstr)
-		return (NULL);
-	else if (s1[i] && i < size && flag == 'p')
-		dupstr[i++] = s1[i++];
-	else while (s1[i] && i < counter && flag == 'w')
-		dupstr[i++] = s1[i++];
+		 dupstr = (char *)malloc(sizeof(char) * (counter + 1));
+		if (dupstr)
+			while (*s1 && counter)
+				*(dupstr++) = *(s1 - counter--);
+	 }
+	 else
+	{
+		counter = -1;
+		dupstr = (char *)malloc(sizeof(char) * (size + 1));
+		if (dupstr)
+			while (*s1 && counter < size)
+				*(dupstr + counter) = *(s1 + counter++);
+	} 
 	return (dupstr);
  }
  
