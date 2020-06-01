@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 12:18:29 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 13:04:52 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,20 @@ static void			*mcpy_engine(void *s1, const void *s2, size_t bytes)
 	return (s1);
 }
 
-void				*mcpy(void *str1, const void *str2, size_t cpysize)
+void				*mcpy(void *s1, const void *s2, size_t cpysize)
 {
-	if (!str1 && !str2 && cpysize == 0)
-		return (mcpy_engine(str1, str2, cpysize));
-	if (!str1)
-		*(long int*)str1 = *(long int*)str1;
-	if (!str2)
-		*(long int*)str2 = *(long int*)str2;
-	return (mcpy_engine(str1, str2, cpysize));
+	if (!s1 && !s2 && cpysize == 0)
+		return (mcpy_engine(s1, s2, cpysize));
+	if (!s1)
+		*(long int*)s1 = *(long int*)s1;
+	if (!s2)
+		*(long int*)s2 = *(long int*)s2;
+	return (mcpy_engine(s1, s2, cpysize));
 }
 
 static size_t		ft_strlen(const char *s)
 {
-	size_t	size;
+	size_t		size;
 
 	size = 0;
 	while (*s++)
