@@ -6,105 +6,91 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/31 17:18:22 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 02:01:17 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*findnl(char const *s)
+static    int        within_bounds(
+    size_t *n, int mover, void **str1_tmp, const void **str2)
 {
-	if (!s)
-		return (NULL);
-	while ((*s != '\n') && *s)
-		s++;
-	if (!(*s))
-		return (NULL);
-	return ((char *)s);
+    return ((*n -= mover)
+        && (*str1_tmp = (char*)*str1_tmp + mover)
+        && (*str2 = (char*)*str2 + mover));
 }
 
-t_frame		*gen_lst(char const	*buff, int	fd)
+static    void    *mcpy_engine(void *str1, const void *str2, size_t n)
 {
-	t_frame		*new_list;
-	
-	new_list = NULL;
-	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
-		return (NULL);
-	new_list->next = NULL;
-	if (buff == NULL)
+    int        mover;
+    void    *str1_tmp;
+
+    mover = 0;
+    str1_tmp = str1;
+    while (n > 0 && within_bounds(&n, mover, &str1_tmp, &str2))
+    {
+        mover = 0;
+        if (n >= 8)
+        {
+            *(long int*)str1_tmp = *(long int*)str2;
+            mover = sizeof(long int);
+        }
+        else if (n >= 4)
+        {
+            *(int*)str1_tmp = *(int*)str2;
+            mover = sizeof(int);
+        }
+        else
+        {
+            *(char*)str1_tmp = *(char*)str2;
+            mover = sizeof(char);
+        }
+    }
+    return (str1);
+}
+
+void            *mcpy(void *str1, const void *str2, size_t n)
+{
+    if (!str1 && !str2 && n == 0)
+        return (mcpy_engine(str1, str2, n));
+    if (!str1)
+        *(long int*)str1 = *(long int*)str1;
+    if (!str2)
+        *(long int*)str2 = *(long int*)str2;
+    return (mcpy_engine(str1, str2, n));
+}
+
+char        *ft_strjoin(char const *s1, char const *s2)
+{
+    size_t    i;
+    size_t    j;
+    char      *result;
+
+    i = 0;
+    j = 0;
+    if (!s1 || !s2)
+      return (NULL);
+    while (*s1++){i++;}
+    while (*s2++){j++;}
+    if (!(result = (char *)malloc(sizeof(char) * (i + j) + 1)))
+        return (NULL);
+    return (mcpy((mcpy(result,(s1-(i+1)),i+1)+i),(s2-(j+1)), j+1));
+}
+
+char        *strxdup(char const *s1, int size, char flag)
+{
+    char    *result;
+    int     cpy_len;
+    cpy_len = size;
+    result = NULL;
+    if (flag == 'w')
 	{
-		new_list->buff = NULL;
-		new_list->fd = 0;
+		cpy_len = 0;
+        while (*s1++){cpy_len++;}
 	}
-	else
-	{
-		if (!(new_list->buff = malloc(sizeof(buff))))
-		{
-			free(new_list);
-			return (NULL);
-		}
-		new_list->buff[0] = '\0';
-		new_list->fd = fd;
-	}
-	new_list->next = NULL;
-	return (new_list);
-}
-
-char		*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	size_t	j;
-	char	*str;
-
-	j = 0;
-	i = 0;
-	if (s1)
-		 while (*s1++)
-			 i++;
-	if (s2)
-		while(*s1++)
-			 j++;
-	if ((str = (char *)malloc(sizeof(str) * ((i + j) + 1))) == NULL)
-		return (NULL);
-	i = 0;
-	while (*s1)
-		str[i++] = *s1++;
-	if (s2)
-		while (*s2)
-			str[i++] = *s2++;
-	str[i] = '\0';
-	return (str);
-}
-
-/*
-** We use size as a flag, if the size is sent to func as -1, we can assume
-** that the caller wanted a full copy of the string
-*/
-
-
-char		*strxdup(char const *s1, int size, char flag)
-{
- 	char		*dupstr;
- 	int 		  counter;
- 
- 	counter = 0;
- 	if (flag == 'w')
-	 {
-		 while (*s1++)
-			 counter++;
-		 dupstr = (char *)malloc(sizeof(char) * (counter + 1));
-		if (dupstr)
-			while (*s1 && counter)
-				*(dupstr++) = *(s1 - counter--);
-	 }
-	 else
-	{
-		counter = -1;
-		dupstr = (char *)malloc(sizeof(char) * (size + 1));
-		if (dupstr)
-			while (*s1 && counter < size)
-				*(dupstr + counter) = *(s1 + counter++);
-	} 
-	return (dupstr);
+    result = malloc(sizeof(*result) * (cpy_len + 1));
+    mcpy(result, (s1 - (cpy_len + 1)), (cpy_len + 1));
+    result[cpy_len] = '\0';
+    return (result);
  }
  

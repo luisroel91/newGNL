@@ -6,11 +6,38 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/05/31 14:39:22 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 01:51:23 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+t_frame		*gen_lst(char const	*buff, int	fd)
+{
+	t_frame		*new_list;
+	
+	new_list = NULL;
+	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
+		return (NULL);
+	new_list->next = NULL;
+	if (buff == NULL)
+	{
+		new_list->buff = NULL;
+		new_list->fd = 0;
+	}
+	else
+	{
+		if (!(new_list->buff = malloc(sizeof(buff))))
+		{
+			free(new_list);
+			return (NULL);
+		}
+		new_list->buff[0] = '\0';
+		new_list->fd = fd;
+	}
+	new_list->next = NULL;
+	return (new_list);
+}
 
 t_frame		*frame_ops(int fd, t_frame **list)
 {
@@ -36,16 +63,20 @@ int		fd2frame(int fd, char **line)
 	int		 numbytes;
 	char 	buff[BUFF_SIZE + 1];
 	char 	*ptr;
+	char	*ptr1;
 	
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[numbytes] = '\0';
 		ptr = *line;
+		ptr1 = buff;
 		if (!(*line = ft_strjoin(*line, buff)))
 			return (-1);
 		free (ptr);
-		if  (findnl(buff))
-			break;
+		while (*ptr1++)
+			if (*(ptr1 - 1) == '\n')
+				break ;
+		free (ptr1);
 	}
 	return (numbytes);
 }
