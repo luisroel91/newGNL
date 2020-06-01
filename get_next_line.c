@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 12:18:29 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 12:22:59 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,14 @@ static int			fd2frame(int fd, char **line)
 {
 	int					numbytes;
 	char			    buff[BUFF_SIZE + 1];
-	char				*ptr2line;
 	char				*ptr2buff;
 
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[numbytes] = '\0';
-		ptr2line = *line;
 		ptr2buff = buff;
-		if (!(ptr2line = ft_strjoin(*line, buff)))
+		if (!(*line = ft_strjoin(*line, buff)))
 			return (-1);
-		free (ptr2line);
 		while (*ptr2buff)
 			if (*ptr2buff++  == '\n')
 				break ;
