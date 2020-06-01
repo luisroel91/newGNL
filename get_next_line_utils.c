@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 03:04:01 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 03:52:50 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static    void    *mcpy_engine(void *s1, const void *s2, size_t sz)
     offset = 0;
     ptr = s1;
     while (sz > 0 && within_bounds(&sz, offset, &ptr, &s2))
-    {
         offset = 0;
         if (sz >= 8)
         {
@@ -41,11 +40,8 @@ static    void    *mcpy_engine(void *s1, const void *s2, size_t sz)
             offset = sizeof(int);
         }
         else
-        {
             *(char*)ptr = *(char*)s2;
             offset = sizeof(char);
-        }
-    }
     return (s1);
 }
 
@@ -86,10 +82,8 @@ char        *strxdup(char const *s1, int size, char flag)
     cpy_len = size;
     result = NULL;
     if (flag == 'w')
-	{
 		cpy_len = 0;
         while (*s1++){cpy_len++;}
-	}
     result = malloc(sizeof(*result) * (cpy_len + 1));
     mcpy(result, (s1 - (cpy_len + 1)), (cpy_len + 1));
     result[cpy_len] = '\0';
