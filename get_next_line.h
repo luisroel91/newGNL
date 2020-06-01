@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:03:48 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 05:05:18 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 13:35:27 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@
 
 typedef struct		s_frame
 {
-    char					  *buff;
+    char						*buff;
     int							fd;
-    struct	s_frame		*next;
+    struct	s_frame				*next;
 }								t_frame;
 
 int                 			get_next_line(int fd, char **line);
-void           				 *mcpy(void *str1, const void *str2, size_t n);
-char						  *ft_strjoin(char const *s1, char const *s2);
+void							*mcpy(void *str1, const void *str2, size_t n);
+char							*ft_strjoin(char const *s1, char const *s2);
 
 
 #endif 
