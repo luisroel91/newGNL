@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 11:50:47 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 12:13:44 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static int			fd2frame(int fd, char **line)
 		if (!(*line = ft_strjoin(*line, buff)))
 			return (-1);
 		free (ptr2line);
-		while (*ptr2buff++)
-			if (*(ptr2buff - 1) == '\n')
+		while (*ptr2buff)
+			if (*ptr2buff++  == '\n')
 				break ;
 		free (ptr2buff);
 	}
