@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 12:33:51 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 13:47:34 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,22 @@ static t_frame		*gen_lst(char const	*buff, int	fd)
 
 	new_list = NULL;
 	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
+	{
 		free(new_list);
 		return (NULL);
+	}
 	if (!buff)
+	{
 		new_list->buff = NULL;
 		new_list->fd = 0;
 		new_list->next = NULL;
 		return (new_list);
+	}
 	if (!(new_list->buff = malloc(sizeof(buff))))
+	{
 		free(new_list->buff);
 		return (NULL);
+	}
 	new_list->buff[0] = '\0';
 	new_list->fd = fd;
 	new_list->next = NULL;
@@ -40,13 +46,17 @@ static t_frame		*frame_ops(int fd, t_frame **list)
 
 	ptr = NULL;
 	if (!list)
+	{
 		free(ptr);
 		return (NULL);
+	}
 	ptr = *list;
 	while (ptr)
+	{
 		if (ptr->fd == fd)
 			return (ptr);
 		ptr = ptr->next;
+	}
 	ptr = gen_lst("", fd);
 	ptr->next = *list;
 	*list = ptr;

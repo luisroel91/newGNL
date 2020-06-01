@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 13:04:52 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 13:48:32 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void			*mcpy_engine(void *s1, const void *s2, size_t bytes)
 	offset = 0;
 	ptr2s1 = s1;
 	while (bytes > 0 && within_bounds(&bytes, offset, &ptr2s1, &s2))
+	{
 		offset = 0;
 		if (bytes >= 8)
 		{
@@ -40,8 +41,11 @@ static void			*mcpy_engine(void *s1, const void *s2, size_t bytes)
 			offset = sizeof(int);
 		}
 		else
+		{
 			*(char*)ptr2s1 = *(char*)s2;
 			offset = sizeof(char);
+		}
+	}
 	return (s1);
 }
 
