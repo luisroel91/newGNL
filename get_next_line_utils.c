@@ -6,47 +6,47 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 02:01:17 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 03:04:01 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 static    int        within_bounds(
-    size_t *n, int mover, void **str1_tmp, const void **str2)
+    size_t *n, int offset, void **ptr, const void **s2)
 {
-    return ((*n -= mover)
-        && (*str1_tmp = (char*)*str1_tmp + mover)
-        && (*str2 = (char*)*str2 + mover));
+    return ((*n -= offset)
+        && (*ptr = (char*)*ptr + offset)
+        && (*s2 = (char*)*s2 + offset));
 }
 
-static    void    *mcpy_engine(void *str1, const void *str2, size_t n)
+static    void    *mcpy_engine(void *s1, const void *s2, size_t sz)
 {
-    int        mover;
-    void    *str1_tmp;
+    int        offset;
+    void    *ptr;
 
-    mover = 0;
-    str1_tmp = str1;
-    while (n > 0 && within_bounds(&n, mover, &str1_tmp, &str2))
+    offset = 0;
+    ptr = s1;
+    while (sz > 0 && within_bounds(&sz, offset, &ptr, &s2))
     {
-        mover = 0;
-        if (n >= 8)
+        offset = 0;
+        if (sz >= 8)
         {
-            *(long int*)str1_tmp = *(long int*)str2;
-            mover = sizeof(long int);
+            *(long int*)ptr = *(long int*)s2;
+            offset = sizeof(long int);
         }
-        else if (n >= 4)
+        else if (sz >= 4)
         {
-            *(int*)str1_tmp = *(int*)str2;
-            mover = sizeof(int);
+            *(int*)ptr = *(int*)s2;
+            offset = sizeof(int);
         }
         else
         {
-            *(char*)str1_tmp = *(char*)str2;
-            mover = sizeof(char);
+            *(char*)ptr = *(char*)s2;
+            offset = sizeof(char);
         }
     }
-    return (str1);
+    return (s1);
 }
 
 void            *mcpy(void *str1, const void *str2, size_t n)
@@ -65,6 +65,7 @@ char        *ft_strjoin(char const *s1, char const *s2)
     size_t    i;
     size_t    j;
     char      *result;
+    char      *ptr;
 
     i = 0;
     j = 0;
@@ -72,9 +73,10 @@ char        *ft_strjoin(char const *s1, char const *s2)
       return (NULL);
     while (*s1++){i++;}
     while (*s2++){j++;}
-    if (!(result = (char *)malloc(sizeof(char) * (i + j) + 1)))
+     if (!(result = (char *)malloc(sizeof(char) * (i++ + j++) + 1)))
         return (NULL);
-    return (mcpy((mcpy(result,(s1-(i+1)),i+1)+i),(s2-(j+1)), j+1));
+    ptr =  mcpy((mcpy(result,(s1-i),i)+i-1),(s2-j),j);
+    return (ptr-(i-1));
 }
 
 char        *strxdup(char const *s1, int size, char flag)
