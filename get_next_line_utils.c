@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:54 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 11:12:42 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 11:50:46 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void				*mcpy(void *str1, const void *str2, size_t cpysize)
 	return (mcpy_engine(str1, str2, cpysize));
 }
 
-size_t				ft_strlen(const char *s)
+static size_t		ft_strlen(const char *s)
 {
 	size_t	size;
 

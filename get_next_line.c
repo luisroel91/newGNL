@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 11:12:41 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 11:50:47 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_frame		*frame_ops(int fd, t_frame **list)
 	return (ptr);
 }
 
-static int					fd2frame(int fd, char **line)
+static int			fd2frame(int fd, char **line)
 {
 	int					numbytes;
 	char			    buff[BUFF_SIZE + 1];
