@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 05:03:49 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/01 05:42:46 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static t_frame		*gen_lst(char const	*buff, int	fd)
 {
-	t_frame		*new_list;
-	
+	t_frame				*new_list;
+
 	new_list = NULL;
 	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
 		free(new_list);
@@ -36,8 +36,8 @@ static t_frame		*gen_lst(char const	*buff, int	fd)
 
 static t_frame		*frame_ops(int fd, t_frame **list)
 {
-	t_frame		*ptr;
-	
+	t_frame				*ptr;
+
 	ptr = NULL;
 	if (!list)
 		free(ptr);
@@ -53,13 +53,13 @@ static t_frame		*frame_ops(int fd, t_frame **list)
 	return (ptr);
 }
 
-static int		fd2frame(int fd, char **line)
+static int					fd2frame(int fd, char **line)
 {
-	int		 numbytes;
-	char 	buff[BUFF_SIZE + 1];
-	char 	*ptr;
-	char	*ptr1;
-	
+	int					numbytes;
+	char			    buff[BUFF_SIZE + 1];
+	char				*ptr;
+	char				*ptr1;
+
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[numbytes] = '\0';
@@ -76,12 +76,13 @@ static int		fd2frame(int fd, char **line)
 	return (numbytes);
 }
 
-static int		frame2line(char **line, char *buff)
+static int			frame2line(char **line, char *buff)
 {
 	int		counter;
-	
+
 	counter = 0;
-	while (buff[counter] && buff[counter] != '\n'){counter++;};
+	while (buff[counter] && buff[counter] != '\n')
+		counter++;
 	if (!(*line = (char *)malloc(sizeof(char) * counter + 1)))
 		return (0);
 	mcpy(*line, buff, counter);
@@ -89,13 +90,13 @@ static int		frame2line(char **line, char *buff)
 	return (counter);
 }
 
-int		get_next_line(int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
 	static	t_frame	*list;
-	t_frame			*current;
-	size_t			lnlen;
-	char			*ptr;
-	char			buff[BUFF_SIZE + 1];
+	t_frame			  *current;
+	size_t				lnlen;
+	char				*ptr;
+	char				buff[BUFF_SIZE + 1];
 
 	if (fd < 0 || !line || (read(fd, buff, 0)) < 0 ||
 		(!(current = frame_ops(fd, &list))))
