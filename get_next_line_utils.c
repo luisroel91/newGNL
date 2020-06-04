@@ -23,7 +23,7 @@ static int			within_bounds(
 static void			*mcpy_engine(void *s1, const void *s2, size_t bytes)
 {
 	int			offset;
-	void		*ptr2s1;
+	void			*ptr2s1;
 
 	offset = 0;
 	ptr2s1 = s1;
@@ -60,29 +60,34 @@ void				*mcpy(void *s1, const void *s2, size_t cpysize)
 	return (mcpy_engine(s1, s2, cpysize));
 }
 
-static size_t		ft_strlen(const char *s)
+int				checkn(char const *s, size_t buffsize)
 {
-	size_t		size;
-
-	size = 0;
-	while (*s++)
-		size++;
-	return (size);
+	size_t		i;
+	
+	i = 0;
+	while (i < buffsize)
+		if (*(s + i++) == '\n')
+			return (1);
+	return (0);
 }
 
 char				*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t		s1len;
-	size_t		s2len;
+	size_t		l1;
+	size_t		l2;
 	char		*result;
-	char		*ptr;
 
 	if (!s1 || !s2)
 		return (NULL);
-	s1len = ft_strlen(s1);
-	s2len = ft_strlen(s2);
-	if (!(result = (char *)malloc(sizeof(char) * (s1len++ + s2len++) + 1)))
+	l1 = 0;
+	l2 = 0;
+	while (*s1++)
+		l1++;
+	while (*s2++)
+		l2++;
+	if (!(result = (char *)malloc(sizeof(char) * (l1 + l2 + 1))))
 		return (NULL);
-	ptr =  mcpy((mcpy(result, (s1-s1len), s1len)+s1len-1), (s2-s2len), s2len);
-	return (ptr-(s1len-1));
+	mcpy(result, (s1-l1), l1);
+	mcpy(result + l1, (s2-l2-1), l2 + 1);
+	return (result);
 }

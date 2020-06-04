@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/01 13:47:34 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/04 05:08:46 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_frame		*gen_lst(char const	*buff, int	fd)
 {
-	t_frame				*new_list;
+	t_frame		*new_list;
 
 	new_list = NULL;
 	if (!(new_list = (t_frame *)malloc(sizeof(t_frame))) || fd > MAX_FD)
@@ -42,7 +42,7 @@ static t_frame		*gen_lst(char const	*buff, int	fd)
 
 static t_frame		*frame_ops(int fd, t_frame **list)
 {
-	t_frame				*ptr;
+	t_frame		*ptr;
 
 	ptr = NULL;
 	if (!list)
@@ -63,47 +63,60 @@ static t_frame		*frame_ops(int fd, t_frame **list)
 	return (ptr);
 }
 
-static int			fd2frame(int fd, char **line)
+static int		fd2frame(int fd, char **line)
 {
-	int					numbytes;
-	char			    buff[BUFF_SIZE + 1];
-	char				*ptr2buff;
+	size_t		numbytes;
+	size_t		i;
+	int			flag;
+	char		buff[BUFF_SIZE + 1];
+	char		*ptr;
 
 	while ((numbytes = read(fd, buff, BUFF_SIZE)))
 	{
-		buff[numbytes] = '\0';
-		ptr2buff = buff;
-		if (!(*line = ft_strjoin(*line, buff)))
-			return (-1);
-		while (*ptr2buff)
-			if (*ptr2buff++  == '\n')
-				break ;
-		free (ptr2buff);
+		i = 0;
+		flag = 1;
+		while (flag)
+		{
+			buff[numbytes] = '\0';
+			ptr = *line;
+			if (!(*line = ft_strjoin(*line, buff)))
+				return (-1);
+			free(ptr);
+			while (i < numbytes)
+			{
+				if (buff[i++] == '\n')
+					flag = 0;
+					break ;
+			}
+		}
+		break ;
 	}
 	return (numbytes);
 }
 
-static int			frame2line(char **line, char *buff)
+static int		frame2line(char **line, char *buff)
 {
-	int		counter;
+	size_t		counter;
+	size_t		total;
 
 	counter = 0;
-	while (buff[counter] && buff[counter] != '\n')
-		counter++;
+	total = 0;
+	while (buff[counter] && buff[counter++] != '\n');
+	while (buff[total++]);
 	if (!(*line = (char *)malloc(sizeof(char) * counter + 1)))
 		return (0);
 	mcpy(*line, buff, counter);
 	line[counter + 1] = '\0';
-	return (counter);
+	return (total);
 }
 
-int					get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
 	static	t_frame	*list;
-	t_frame			  *current;
-	size_t				lnlen;
-	char				*ptr;
-	char				buff[BUFF_SIZE + 1];
+	t_frame		*current;
+	size_t		lnlen;
+	char		*ptr;
+	char		buff[BUFF_SIZE + 1];
 
 	if (fd < 0 || !line || (read(fd, buff, 0)) < 0 ||
 		(!(current = frame_ops(fd, &list))))
@@ -117,7 +130,11 @@ int					get_next_line(int fd, char **line)
 	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		mcpy(ptr, &current->buff[lnlen + 1], lnlen);
+		// We need to add to the current frames buff here
+		// how without malloc/strdup/?
+		// current->buff = strdup(&((frame->content))[lnlen + 1])));
+		// free(ptr)
+		mcpy(current->buff, &((current->buff)[lnlen+1]), lnlen);
 		ptr[lnlen + 1] = '\0';
 		free(ptr);
 	}

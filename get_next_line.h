@@ -25,14 +25,15 @@
 
 typedef struct		s_frame
 {
-    char						*buff;
-    int							fd;
-    struct	s_frame				*next;
-}								t_frame;
+    char		*buff;
+    int			fd;
+    struct s_frame	*next;
+}			t_frame;
 
-int                 			get_next_line(int fd, char **line);
-void							*mcpy(void *str1, const void *str2, size_t n);
-char							*ft_strjoin(char const *s1, char const *s2);
+int			get_next_line(int fd, char **line);
+void			*mcpy(void *s1, const void *s2, size_t cpysize);
+int			checkn(char const *s, size_t buffsize);
+char			*ft_strjoin(char const *s1, char const *s2);
 
+#endif
 
-#endif 
