@@ -6,7 +6,7 @@
 /*   By: luiroel <luiroel@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 19:02:43 by luiroel           #+#    #+#             */
-/*   Updated: 2020/06/04 05:08:46 by luiroel          ###   ########.fr       */
+/*   Updated: 2020/06/04 17:45:14 by luiroel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,22 @@ static t_frame		*frame_ops(int fd, t_frame **list)
 
 static int		fd2frame(int fd, char **line)
 {
-	size_t		numbytes;
-	size_t		i;
-	int			flag;
-	char		buff[BUFF_SIZE + 1];
-	char		*ptr;
+	size_t				numbytes;
+	char				buff[BUFF_SIZE + 1];
+	char				*ptr;
+	char				*ptr2;
 
-	while ((numbytes = read(fd, buff, BUFF_SIZE)))
+	ptr2 = &buff[0];
+	while (*ptr2 != '\n' && (numbytes = read(fd, buff, BUFF_SIZE)))
 	{
-		i = 0;
-		flag = 1;
-		while (flag)
-		{
-			buff[numbytes] = '\0';
-			ptr = *line;
-			if (!(*line = ft_strjoin(*line, buff)))
-				return (-1);
-			free(ptr);
-			while (i < numbytes)
-			{
-				if (buff[i++] == '\n')
-					flag = 0;
-					break ;
-			}
-		}
-		break ;
+		buff[numbytes] = '\0';
+		ptr = *line;
+		if (!(*line = ft_strjoin(*line, buff)))
+			return (-1);
+		free(ptr);
+		while (ptr2)
+			if (*ptr2++ == '\n')
+				break ;
 	}
 	return (numbytes);
 }
@@ -97,17 +88,14 @@ static int		fd2frame(int fd, char **line)
 static int		frame2line(char **line, char *buff)
 {
 	size_t		counter;
-	size_t		total;
 
 	counter = 0;
-	total = 0;
 	while (buff[counter] && buff[counter++] != '\n');
-	while (buff[total++]);
-	if (!(*line = (char *)malloc(sizeof(char) * counter + 1)))
+	if (!(*line = (char *)malloc(sizeof(char) * counter)))
 		return (0);
-	mcpy(*line, buff, counter);
-	line[counter + 1] = '\0';
-	return (total);
+	mcpy(*line, buff, counter - 1);
+	line[counter] = '\0';
+	return (counter);
 }
 
 int			get_next_line(int fd, char **line)
@@ -130,12 +118,7 @@ int			get_next_line(int fd, char **line)
 	ptr = current->buff;
 	if (ptr[lnlen] != '\0')
 	{
-		// We need to add to the current frames buff here
-		// how without malloc/strdup/?
-		// current->buff = strdup(&((frame->content))[lnlen + 1])));
-		// free(ptr)
-		mcpy(current->buff, &((current->buff)[lnlen+1]), lnlen);
-		ptr[lnlen + 1] = '\0';
+		current->buff = ft_strjoin(&current->buff[lnlen] , "");
 		free(ptr);
 	}
 	else
